@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mis Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/new-task']">Agregar Tarea</ion-button>
+      <ion-button (click)="goToCalendar()">Ver Calendario</ion-button>
+      <ion-button color="primary" (click)="backupTasks()">Copia de Seguridad</ion-button>
+      <ion-button color="secondary" (click)="restoreTasks()">Restaurar Tareas</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="loadTasks()" debounce="500" placeholder="Buscar tareas por nombre"></ion-searchbar>
+
+  <!-- Filtros -->
+  <ion-item>
+    <ion-label>Tipo</ion-label>
+    <ion-select [(ngModel)]="filterType" (ionChange)="loadTasks()">
+      <ion-select-option value="">Todos</ion-select-option>
+      <ion-select-option value="personales">Personales</ion-select-option>
+      <ion-select-option value="trabajo">Trabajo</ion-select-option>
+      <ion-select-option value="sociales">Sociales</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Prioridad</ion-label>
+    <ion-select [(ngModel)]="filterPriority" (ionChange)="loadTasks()">
+      <ion-select-option value="">Todas</ion-select-option>
+      <ion-select-option value="baja">Baja</ion-select-option>
+      <ion-select-option value="media">Media</ion-select-option>
+      <ion-select-option value="alta">Alta</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Estado</ion-label>
+    <ion-select [(ngModel)]="filterState" (ionChange)="loadTasks()">
+      <ion-select-option value="">Todos</ion-select-option>
+      <ion-select-option value="inicial">Inicial</ion-select-option>
+      <ion-select-option value="en ejecución">En Ejecución</ion-select-option>
+      <ion-select-option value="terminada">Terminada</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Mostrar tareas en formato lista con Drag & Drop -->
+  <ion-list cdkDropList (cdkDropListDropped)="onTaskDrop($event)">
+    <ion-item *ngFor="let task of tasks" cdkDrag [cdkDragData]="task">
+      <ion-label>
+        <h2>{{ task.title }}</h2>
+        <p><strong>Descripción:</strong> {{ task.description }}</p>
+        <p><strong>Fecha:</strong> {{ task.dueDate | date:'shortDate' }} <!-- Mostrar solo la fecha -->
+        <strong>Hora:</strong> {{ task.dueDate | date:'shortTime' }} <!-- Mostrar solo la hora -->
+        </p>
+        <p *ngIf="task.reminder"><strong>Recordatorio:</strong> {{ task.reminder | date:'shortDate' }} {{ task.reminder | date:'shortTime' }}</p>
+        <p><strong>Prioridad:</strong> {{ task.priority }}</p>
+        <p><strong>Estado:</strong> {{ task.state }}</p>
+        <p><strong>Tipo:</strong> {{ task.type }}</p>
+        <p><strong>Notas:</strong> {{ task.notes || 'Sin notas' }}</p>
+      </ion-label>
+      <ion-button color="success" (click)="markAsCompleted(task.id)">Completada</ion-button>
+      <ion-button color="primary" (click)="editTask(task)">Editar</ion-button>
+      <ion-button color="danger" (click)="deleteTask(task.id)">Eliminar</ion-button>
+      <ion-button color="warning" (click)="reprogramarTarea(task)">Reprogramar</ion-button>
+    </ion-item>
+  </ion-list>
+  
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openAccessibilitySettings()">
+      <ion-icon name="settings"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

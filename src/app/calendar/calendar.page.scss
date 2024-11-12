@@ -1,0 +1,61 @@
+// src/app/pages/calendar/calendar.page.scss
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    font-size: 1.5rem;
+    color: var(--ion-color-primary);
+  }
+  
+  .days-header {
+    font-weight: bold;
+    background-color: var(--ion-color-light);
+    text-align: center;
+  }
+  
+  .day-header {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--ion-color-medium);
+  }
+  
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Siete columnas para representar cada día */
+    gap: 0.5rem;
+  }
+  
+  .day-cell {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--ion-color-light);
+    background-color: var(--ion-color-light);
+  }
+  
+  .day-cell.has-tasks {
+    background-color: #e0f7fa; /* Color de fondo para días con tareas */
+  }
+  
+  ion-card {
+    width: 100%;
+    height: 100%;
+  }
+  
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  ion-badge {
+    margin-top: 0.5rem;
+  }
+  

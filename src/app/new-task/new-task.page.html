@@ -1,0 +1,59 @@
+<!-- src/app/new-task/new-task.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ task.id ? 'Editar Tarea' : 'Nueva Tarea' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="saveTask()">
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input [(ngModel)]="task.title" name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="task.description" name="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Fecha de Vencimiento</ion-label>
+      <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="task.dueDate" name="dueDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Prioridad</ion-label>
+      <ion-select [(ngModel)]="task.priority" name="priority">
+        <ion-select-option value="baja">Baja</ion-select-option>
+        <ion-select-option value="media">Media</ion-select-option>
+        <ion-select-option value="alta">Alta</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Estado</ion-label>
+      <ion-select [(ngModel)]="task.state" name="state">
+        <ion-select-option value="inicial">Inicial</ion-select-option>
+        <ion-select-option value="en ejecución">En Ejecución</ion-select-option>
+        <ion-select-option value="terminada">Terminada</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Tipo</ion-label>
+      <ion-select [(ngModel)]="task.type" name="type">
+        <ion-select-option value="personales">Personales</ion-select-option>
+        <ion-select-option value="trabajo">Trabajo</ion-select-option>
+        <ion-select-option value="sociales">Sociales</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Notas</ion-label>
+      <ion-textarea [(ngModel)]="task.notes" name="notes"></ion-textarea>
+    </ion-item>
+
+    <ion-button expand="block" type="submit">{{ task.id ? 'Actualizar Tarea' : 'Guardar Tarea' }}</ion-button>
+  </form>
+</ion-content>

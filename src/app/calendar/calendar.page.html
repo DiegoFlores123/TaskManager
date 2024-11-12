@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Calendario de Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBackToList()">Regresar a la vista de lista</ion-button>
+      <ion-button (click)="previousMonth()">Anterior</ion-button>
+      <ion-button (click)="nextMonth()">Siguiente</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Contenedor del calendario, se muestra solo si no hay un día seleccionado -->
+  <div *ngIf="!selectedDay" class="calendar-container">
+    <div class="calendar-header">
+      <h2>{{ currentMonth | date: 'MMMM y' }}</h2>
+    </div>
+
+    <ion-grid>
+      <ion-row class="days-grid">
+        <ion-col
+          *ngFor="let day of days"
+          class="day-cell"
+          [class.has-tasks]="day.tasks.length > 0"
+        >
+          <ion-card (click)="viewTasks(day)">
+            <ion-card-header>
+              <!-- Muestra el nombre del día y el número juntos -->
+              <ion-card-title>
+                {{ day.date | date: 'EEE d' }}
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge color="tertiary" *ngIf="day.tasks.length > 0">{{ day.tasks.length }} Tarea(s)</ion-badge>
+              <p *ngIf="day.tasks.length === 0">Sin tareas</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Contenedor de tareas para el día seleccionado, se muestra solo cuando hay un día seleccionado -->
+  <ng-container *ngIf="selectedDay">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Tareas para {{ selectedDay.date | date: 'EEEE, d MMMM' }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="full" color="primary" (click)="closeTaskView()">Ver Calendario</ion-button>
+        <ion-list>
+          <ion-item *ngFor="let task of selectedDay.tasks">
+            <ion-label>
+              <h2>{{ task.title }}</h2>
+              <p><strong>Descripción:</strong> {{ task.description }}</p>
+              <p><strong>Fecha:</strong> {{ task.dueDate | date:'shortDate' }} 
+              <strong>Hora:</strong> {{ task.dueDate | date:'shortTime' }}</p>
+              <p *ngIf="task.reminder"><strong>Recordatorio:</strong> {{ task.reminder | date:'shortDate' }} {{ task.reminder | date:'shortTime' }}</p>
+              <p><strong>Prioridad:</strong> {{ task.priority }}</p>
+              <p><strong>Estado:</strong> {{ task.state }}</p>
+              <p><strong>Tipo:</strong> {{ task.type }}</p>
+              <p><strong>Notas:</strong> {{ task.notes || 'Sin notas' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <p *ngIf="selectedDay.tasks.length === 0">Sin tareas para este día</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>
